@@ -4,8 +4,6 @@
 
     <rule ref="moodle"/>
 
-    <!-- identity_code overrides TCPDF 2D barcode methods which use camelCase in upstream library -->
-    <rule ref="moodle.NamingConventions.ValidFunctionName.LowercaseMethod">
-        <exclude-pattern>classes/identity_code\.php</exclude-pattern>
-    </rule>
+    <!-- identity_code is an adapted third-party Datamatrix ECC200 barcode generator with camelCase methods -->
+    <exclude-pattern>*/identity_code\.php</exclude-pattern>
 </ruleset>
