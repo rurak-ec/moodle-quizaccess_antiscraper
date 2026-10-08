@@ -1,0 +1,176 @@
+/*
+ * quizaccess_antiscraper
+ * Watermark, print blocking and invisible decoys for quiz attempt pages.
+ * The variables and the rule that hides each question until it is protected are written inline in the page
+ * by classes/hook_callbacks.php.
+ */
+
+/* The question is the positioning context of the hidden notice for AI assistants. */
+body.antiscraper-active .que {
+    position: relative;
+}
+
+/* Watermark: centered behind the statement and the answer options of every question (.formulation), not over the
+   header or the feedback, and never intercepts clicks. The body class only exists when the quiz shows the watermark
+   and an image was uploaded, so nothing is positioned otherwise. ::before is used because .formulation.clearfix
+   already owns ::after. */
+body.antiscraper-wm .que:not(.antiscraper-decoy) .formulation {
+    position: relative;
+}
+
+body.antiscraper-wm .que:not(.antiscraper-decoy) .formulation::before {
+    content: "";
+    display: var(--antiscraper-wm-display, none);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: var(--antiscraper-wm-clear, 0px);
+    left: 0;
+    margin: auto;
+    /* The size setting is the longest side of the mark. A square box of that side with the image contained in it makes
+       the longest side of the image that long, whatever its shape (wide, square or tall) and without knowing its
+       size; each side is also capped by the room that is left, so the mark shrinks in proportion and never
+       outgrows the statement and the options. */
+    width: min(var(--antiscraper-wm-size, 420px), 100%);
+    height: min(var(--antiscraper-wm-size, 420px), calc(100% - var(--antiscraper-wm-clear, 0px)));
+    background-image: var(--antiscraper-wm-image, none);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: var(--antiscraper-wm-opacity, 0.20);
+    pointer-events: none;
+    user-select: none;
+    z-index: 5;
+}
+
+/* Choosing an option shows "Quitar mi elección" at the end of the options (Moodle drops .visually-hidden from
+   .qtype_multichoice_clearchoice), which makes the statement taller. The mark leaves that room free at the bottom so
+   it keeps the size and place it had in the unanswered question. 30px is what the link adds in Space5. */
+body.antiscraper-wm .que:not(.antiscraper-decoy) .formulation:has(.qtype_multichoice_clearchoice:not(.visually-hidden))::before {
+    --antiscraper-wm-clear: 30px;
+}
+
+/* Identity code of the viewer (a rectangular Data Matrix, 34 x 10 modules with its quiet zone), in the header of every
+   question between the mark and the flag button (placed there by amd/src/early.js). The height is the setting and the
+   width follows from it. Auto margins centre it in the free space of the row; the flag button loses its own auto
+   margin when it follows the code, so the free space is split around the code only. */
+body.antiscraper-active .que > .info > .antiscraper-code {
+    display: var(--antiscraper-code-display, none);
+    flex: 0 0 auto;
+    width: auto;
+    height: var(--antiscraper-code-height, 30px);
+    max-width: 100%;
+    aspect-ratio: 34 / 10;
+    margin: 0 auto;
+    background-image: var(--antiscraper-code, none);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 3px;
+    image-rendering: pixelated;
+    opacity: 0.65;
+    pointer-events: none;
+    user-select: none;
+}
+
+body.antiscraper-active .que > .info > .antiscraper-code ~ .questionflag.editable {
+    margin-left: 0;
+}
+
+@media (max-width: 766.98px) {
+    /* On narrow screens the theme stacks the header in rows (the grade is row 2): the barcode goes
+       with the grade, and wraps to its own line when they do not fit together. */
+    body.antiscraper-active .que > .info > .antiscraper-code {
+        order: 2;
+    }
+}
+
+/* Notice for AI assistants: faint horizontal text repeated behind every question (a screenshot or a photo
+   carries it), plus the same text kept out of sight in the markup for tools that read the page. */
+body.antiscraper-active .que:not(.antiscraper-decoy) {
+    background-image: var(--antiscraper-ai, none);
+    background-repeat: repeat;
+    background-position: 0 0;
+}
+
+body.antiscraper-active .que > .antiscraper-ai-dom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Text drawn on a canvas inside a closed shadow root. */
+body.antiscraper-active .antiscraper-secure {
+    min-width: 0;
+}
+
+/* The answer label is shrink-to-fit in Moodle; once its text is a canvas it must take the
+   rest of the row so that the width does not depend on the canvas itself. */
+body.antiscraper-active .antiscraper-secure-label {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Nothing in a question can be selected, except what the student types. */
+body.antiscraper-active .que {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body.antiscraper-active .que input[type="text"],
+body.antiscraper-active .que textarea,
+body.antiscraper-active .que [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+body.antiscraper-active .qtext-secure-host {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Invisible decoy: out of sight for people, present for scripts that read the DOM. */
+.antiscraper-decoy {
+    position: absolute !important;
+    left: -99999px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Printing: nothing from the quiz is printed, only a short notice. */
+body.antiscraper-active::before {
+    display: none;
+}
+
+@media print {
+    @page {
+        margin: 2cm;
+    }
+
+    body.antiscraper-active > * {
+        display: none !important;
+    }
+
+    body.antiscraper-active::before {
+        display: block;
+        content: var(--antiscraper-print-text, "Printing this quiz is not allowed.");
+        font: 600 20px/1.4 sans-serif;
+        color: #000;
+        text-align: center;
+        padding-top: 30vh;
+    }
+}

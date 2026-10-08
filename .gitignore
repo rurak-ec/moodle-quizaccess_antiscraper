@@ -1,0 +1,37 @@
+# Build artifacts at repo root (NOT amd/build/ inside the plugin, which IS committed)
+/build/
+*.zip
+*.tar.gz
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Backup / temp files
+*.bak
+*.swp
+*.swo
+*~
+*.old
+*.tmp
+tmp/
+temp/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PHP
+vendor/
+composer.phar
+
+# Node / build tooling
+node_modules/
+
+# Moodle
+config.php
