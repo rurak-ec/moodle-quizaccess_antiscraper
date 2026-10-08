@@ -162,7 +162,7 @@ class identity_code {
 
         require_once($CFG->libdir . '/tcpdf/include/barcodes/datamatrix.php');
 
-        $symbol = new class($payload) extends \Datamatrix {
+        $symbol = new class ($payload) extends \Datamatrix {
             /**
              * Only the 8 x 32 symbol: size, data region, regions across and down, codewords and blocks.
              *
