@@ -106,8 +106,10 @@ class provider implements
      */
     public static function delete_quizaccess_data_for_user(quiz_settings $quiz, \stdClass $user) {
         global $DB;
-        $DB->delete_records('quizaccess_antiscraper_logs',
-            ['quizid' => $quiz->get_quizid(), 'userid' => $user->id]);
+        $DB->delete_records(
+            'quizaccess_antiscraper_logs',
+            ['quizid' => $quiz->get_quizid(), 'userid' => $user->id]
+        );
     }
 
     /**

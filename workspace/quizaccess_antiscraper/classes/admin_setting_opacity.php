@@ -48,6 +48,7 @@ class admin_setting_opacity extends \admin_setting_configtext {
      * @param string $defaultsetting default value, with a decimal point
      * @param float $min smallest opacity accepted
      * @param float $max largest opacity accepted
+     */
     public function __construct(
         string $name,
         string $visiblename,

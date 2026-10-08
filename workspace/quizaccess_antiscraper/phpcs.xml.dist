@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="quizaccess_antiscraper">
+    <description>Moodle coding standard for quizaccess_antiscraper.</description>
+
+    <rule ref="moodle"/>
+
+    <!-- identity_code overrides TCPDF 2D barcode methods which use camelCase in upstream library -->
+    <rule ref="moodle.NamingConventions.ValidFunctionName.LowercaseMethod">
+        <exclude-pattern>classes/identity_code\.php</exclude-pattern>
+    </rule>
+</ruleset>

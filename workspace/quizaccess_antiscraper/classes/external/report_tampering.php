@@ -72,8 +72,13 @@ class report_tampering extends external_api {
      * @param string $details short free text.
      * @return array ['logged' => bool]
      */
-    public static function execute(int $quizid, int $attemptid, string $incident, string $severity = 'low',
-            string $details = ''): array {
+    public static function execute(
+        int $quizid,
+        int $attemptid,
+        string $incident,
+        string $severity = 'low',
+        string $details = ''
+    ): array {
         global $DB, $USER;
 
         $params = self::validate_parameters(self::execute_parameters(), [
@@ -103,17 +108,27 @@ class report_tampering extends external_api {
 
         // Only keep an attempt id that belongs to this user and quiz.
         $attemptid = 0;
-        if ($params['attemptid'] && $DB->record_exists('quiz_attempts',
-                ['id' => $params['attemptid'], 'quiz' => $params['quizid'], 'userid' => $USER->id])) {
+        if (
+            $params['attemptid'] && $DB->record_exists(
+                'quiz_attempts',
+                ['id' => $params['attemptid'], 'quiz' => $params['quizid'], 'userid' => $USER->id]
+            )
+        ) {
             $attemptid = $params['attemptid'];
         }
 
         // A misbehaving page must not be able to flood the table.
         // Severities are counted apart so that noisy low signals cannot hide a high one.
-        $recent = $DB->count_records_select('quizaccess_antiscraper_logs',
+        $recent = $DB->count_records_select(
+            'quizaccess_antiscraper_logs',
             'quizid = :quizid AND userid = :userid AND severity = :severity AND timecreated > :since',
-            ['quizid' => $params['quizid'], 'userid' => $USER->id, 'severity' => $severity,
-                'since' => time() - self::RATE_WINDOW]);
+            [
+                'quizid' => $params['quizid'],
+                'userid' => $USER->id,
+                'severity' => $severity,
+                'since' => time() - self::RATE_WINDOW,
+            ]
+        );
         if ($recent >= self::RATE_LIMIT) {
             return ['logged' => false];
         }
