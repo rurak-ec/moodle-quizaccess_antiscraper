@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Serve the watermark image.
  *
@@ -36,8 +34,15 @@ defined('MOODLE_INTERNAL') || die();
  * @param array $options additional options affecting the file serving.
  * @return bool false if the file was not found; otherwise the file is sent and the script ends.
  */
-function quizaccess_antiscraper_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload,
-        array $options = []) {
+function quizaccess_antiscraper_pluginfile(
+    $course,
+    $cm,
+    $context,
+    $filearea,
+    $args,
+    $forcedownload,
+    array $options = []
+) {
     if ($context->contextlevel != CONTEXT_SYSTEM || $filearea !== \quizaccess_antiscraper\watermark::FILEAREA) {
         return false;
     }
@@ -49,8 +54,14 @@ function quizaccess_antiscraper_pluginfile($course, $cm, $context, $filearea, $a
     $filename = array_pop($args);
     $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
 
-    $file = get_file_storage()->get_file($context->id, 'quizaccess_antiscraper', $filearea,
-        $itemid, $filepath, $filename);
+    $file = get_file_storage()->get_file(
+        $context->id,
+        'quizaccess_antiscraper',
+        $filearea,
+        $itemid,
+        $filepath,
+        $filename
+    );
     if (!$file) {
         return false;
     }

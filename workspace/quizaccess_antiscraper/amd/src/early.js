@@ -401,7 +401,7 @@ const secure = () => {
         return;
     }
 
-    // The innerText property leaves out text that is not visible, and the content is hidden until it is protected
+    // innerText leaves out text that is not visible, and the content is hidden until it is protected
     // (hook_callbacks.php). Nothing is painted during this synchronous block, so the text never shows.
     targets.forEach((element) => {
         element.style.visibility = 'visible';
