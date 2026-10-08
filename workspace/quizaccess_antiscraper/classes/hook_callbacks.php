@@ -112,7 +112,7 @@ class hook_callbacks {
         if ($cachedmodule === null) {
             $file = __DIR__ . '/../amd/build/early.min.js';
             if (!is_readable($file)) {
-                // watermark.js runs the same module later from the AMD bundle.
+                // Watermark.js runs the same module later from the AMD bundle.
                 return;
             }
             // Drop the doc comments and the source map link, as lib/requirejs.php does for the source map.

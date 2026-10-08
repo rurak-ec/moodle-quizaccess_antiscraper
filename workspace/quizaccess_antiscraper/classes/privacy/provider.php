@@ -35,10 +35,9 @@ use mod_quiz\quiz_settings;
  * Describes, exports and deletes the signals stored for each user.
  */
 class provider implements
-        \core_privacy\local\metadata\provider,
-        quizaccess_provider,
-        quizaccess_user_provider {
-
+    \core_privacy\local\metadata\provider,
+    quizaccess_provider,
+    quizaccess_user_provider {
     /**
      * Describe the stored data.
      *
@@ -69,8 +68,11 @@ class provider implements
     public static function export_quizaccess_user_data(quiz_settings $quiz, \stdClass $user): \stdClass {
         global $DB;
 
-        $logs = $DB->get_records('quizaccess_antiscraper_logs',
-            ['quizid' => $quiz->get_quizid(), 'userid' => $user->id], 'timecreated ASC');
+        $logs = $DB->get_records(
+            'quizaccess_antiscraper_logs',
+            ['quizid' => $quiz->get_quizid(), 'userid' => $user->id],
+            'timecreated ASC'
+        );
 
         $incidents = [];
         foreach ($logs as $log) {

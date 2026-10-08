@@ -52,16 +52,28 @@ class watermark {
         }
 
         $fs = get_file_storage();
-        $files = $fs->get_area_files(context_system::instance()->id, 'quizaccess_antiscraper',
-            self::FILEAREA, 0, 'sortorder, itemid, filepath, filename', false);
+        $files = $fs->get_area_files(
+            context_system::instance()->id,
+            'quizaccess_antiscraper',
+            self::FILEAREA,
+            0,
+            'sortorder, itemid, filepath, filename',
+            false
+        );
         if (!$files) {
             $cachedurl = '';
             return $cachedurl;
         }
 
         $file = reset($files);
-        $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
-            $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
+        $url = moodle_url::make_pluginfile_url(
+            $file->get_contextid(),
+            $file->get_component(),
+            $file->get_filearea(),
+            $file->get_itemid(),
+            $file->get_filepath(),
+            $file->get_filename()
+        );
         // The modification time busts the browser cache when the image is replaced.
         $url->param('v', $file->get_timemodified());
 

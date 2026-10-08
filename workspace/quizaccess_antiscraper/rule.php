@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 use mod_quiz\local\access_rule_base;
 use mod_quiz\quiz_settings;
 
