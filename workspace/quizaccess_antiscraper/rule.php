@@ -34,7 +34,6 @@ use mod_quiz\quiz_settings;
  * looks for a global class named after the component in rule.php.
  */
 class quizaccess_antiscraper extends access_rule_base {
-
     /**
      * Create the rule when it is enabled for the whole site (or was enabled for this quiz before).
      *
@@ -83,12 +82,22 @@ class quizaccess_antiscraper extends access_rule_base {
         // Yes / No lists, like the other yes-or-no settings of the quiz form.
         $yesno = [0 => get_string('no'), 1 => get_string('yes')];
 
-        $mform->addElement('select', 'antiscraper_code', get_string('quizsetting:code', 'quizaccess_antiscraper'), $yesno);
+        $mform->addElement(
+            'select',
+            'antiscraper_code',
+            get_string('quizsetting:code', 'quizaccess_antiscraper'),
+            $yesno
+        );
         $mform->addHelpButton('antiscraper_code', 'quizsetting:code', 'quizaccess_antiscraper');
         $mform->setType('antiscraper_code', PARAM_INT);
         $mform->setDefault('antiscraper_code', 0);
 
-        $mform->addElement('select', 'antiscraper_watermark', get_string('quizsetting:watermark', 'quizaccess_antiscraper'), $yesno);
+        $mform->addElement(
+            'select',
+            'antiscraper_watermark',
+            get_string('quizsetting:watermark', 'quizaccess_antiscraper'),
+            $yesno
+        );
         $mform->addHelpButton('antiscraper_watermark', 'quizsetting:watermark', 'quizaccess_antiscraper');
         $mform->setType('antiscraper_watermark', PARAM_INT);
         $mform->setDefault('antiscraper_watermark', 0);

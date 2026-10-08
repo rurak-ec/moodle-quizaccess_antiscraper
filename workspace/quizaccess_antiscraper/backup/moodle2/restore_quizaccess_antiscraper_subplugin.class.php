@@ -31,7 +31,6 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/restore_mod_quiz_access_s
  * Restores the per-quiz settings.
  */
 class restore_quizaccess_antiscraper_subplugin extends restore_mod_quiz_access_subplugin {
-
     /**
      * Path structure to restore.
      *

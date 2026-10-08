@@ -31,7 +31,6 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
  * Saves the per-quiz settings. The incident logs hold user data and are not backed up.
  */
 class backup_quizaccess_antiscraper_subplugin extends backup_mod_quiz_access_subplugin {
-
     /**
      * Define the XML structure of the subplugin data.
      *
@@ -42,8 +41,8 @@ class backup_quizaccess_antiscraper_subplugin extends backup_mod_quiz_access_sub
 
         $subplugin = $this->get_subplugin_element();
         $wrapper = new backup_nested_element($this->get_recommended_name());
-        $config = new backup_nested_element('quizaccess_antiscraper_cfg', null,
-            ['enabled', 'use_canvas', 'use_honeypot', 'ai_notice', 'watermark', 'identity_code']);
+        $configfields = ['enabled', 'use_canvas', 'use_honeypot', 'ai_notice', 'watermark', 'identity_code'];
+        $config = new backup_nested_element('quizaccess_antiscraper_cfg', null, $configfields);
 
         $subplugin->add_child($wrapper);
         $wrapper->add_child($config);

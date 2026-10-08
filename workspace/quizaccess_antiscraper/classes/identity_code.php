@@ -258,8 +258,10 @@ class identity_code {
         };
 
         $array = $symbol->getBarcodeArray();
-        if (($array['num_rows'] ?? 0) !== self::SYMBOL[0] || ($array['num_cols'] ?? 0) !== self::SYMBOL[1] ||
-                count($array['bcode'] ?? []) !== self::SYMBOL[0]) {
+        $numrows = $array['num_rows'] ?? 0;
+        $numcols = $array['num_cols'] ?? 0;
+        $bcodecount = count($array['bcode'] ?? []);
+        if ($numrows !== self::SYMBOL[0] || $numcols !== self::SYMBOL[1] || $bcodecount !== self::SYMBOL[0]) {
             return null;
         }
         return $array['bcode'];
@@ -305,7 +307,8 @@ class identity_code {
                 while ($x < self::SYMBOL[1] && !empty($row[$x])) {
                     $x++;
                 }
-                $path .= 'M' . ($start + self::QUIET) . ' ' . ($y + self::QUIET) . 'h' . ($x - $start) . 'v1h-' . ($x - $start) . 'z';
+                $dx = $x - $start;
+                $path .= 'M' . ($start + self::QUIET) . ' ' . ($y + self::QUIET) . 'h' . $dx . 'v1h-' . $dx . 'z';
             }
         }
 

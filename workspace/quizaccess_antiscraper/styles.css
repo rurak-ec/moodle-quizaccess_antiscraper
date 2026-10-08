@@ -24,7 +24,7 @@ body.antiscraper-wm .que:not(.antiscraper-decoy) .formulation::before {
     position: absolute;
     top: 0;
     right: 0;
-    bottom: var(--antiscraper-wm-clear, 0px);
+    bottom: var(--antiscraper-wm-clear, 0);
     left: 0;
     margin: auto;
     /* The size setting is the longest side of the mark. A square box of that side with the image contained in it makes
@@ -141,28 +141,28 @@ body.antiscraper-active .qtext-secure-host {
 
 /* Invisible decoy: out of sight for people, present for scripts that read the DOM. */
 .antiscraper-decoy {
-    position: absolute !important;
-    left: -99999px !important;
-    top: 0 !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    position: absolute;
+    left: -99999px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Printing: nothing from the quiz is printed, only a short notice. */
+@page {
+    margin: 2cm;
+}
+
 body.antiscraper-active::before {
     display: none;
 }
 
 @media print {
-    @page {
-        margin: 2cm;
-    }
-
     body.antiscraper-active > * {
-        display: none !important;
+        display: none;
     }
 
     body.antiscraper-active::before {

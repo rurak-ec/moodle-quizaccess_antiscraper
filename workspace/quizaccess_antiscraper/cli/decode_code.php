@@ -17,7 +17,7 @@
 /**
  * Verifies a code found in a screenshot and shows who it belongs to.
  *
- * Usage: docker exec -u www-data moodle-cursos-app php /var/www/html/public/mod/quiz/accessrule/antiscraper/cli/decode_code.php "002860004980012219"
+ * Usage: php cli/decode_code.php "002860004980012219"
  * The code carries the user, the attempt, the question of the attempt (slot) and a signature. The codes issued before the
  * question was added (14 digits), the 20-digit codes of version 1.3.0 and the older AS286.498.1f2e3d4c QR format are
  * accepted too; they have no question.
@@ -26,12 +26,6 @@
  * @copyright  2026 Rurak
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-// This file sits under public/, so refuse to run if it is requested through the web server.
-if (PHP_SAPI !== 'cli') {
-    http_response_code(404);
-    exit(1);
-}
 
 define('CLI_SCRIPT', true);
 
@@ -46,10 +40,14 @@ if (!$ids) {
 
 $user = $DB->get_record('user', ['id' => $ids['userid']], 'id, firstname, lastname, email');
 cli_writeln('Valid code.');
-cli_writeln('User:    ' . ($user ? "{$user->firstname} {$user->lastname} (id {$user->id}, {$user->email})" : "id {$ids['userid']} (deleted)"));
+$userinfo = $user ? "{$user->firstname} {$user->lastname} (id {$user->id}, {$user->email})" : "id {$ids['userid']} (deleted)";
+cli_writeln('User:    ' . $userinfo);
 
 if ($ids['attemptid'] && !$DB->record_exists('quiz_attempts', ['id' => $ids['attemptid'], 'userid' => $ids['userid']])) {
-    cli_writeln("Warning: attempt {$ids['attemptid']} does not belong to this user (or no longer exists); the code may have been forged.");
+    cli_writeln(
+        "Warning: attempt {$ids['attemptid']} does not belong to this user (or no longer exists); " .
+        "the code may have been forged."
+    );
 }
 
 if ($ids['attemptid']) {
