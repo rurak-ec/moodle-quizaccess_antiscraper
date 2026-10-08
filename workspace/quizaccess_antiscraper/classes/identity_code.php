@@ -181,7 +181,7 @@ class identity_code {
              * @param int $cwpos position of the codeword, counting from 0.
              * @return int the randomised pad codeword.
              */
-            protected function get253StateCodeword($cwpad, $cwpos) {
+            protected function get253statecodeword($cwpad, $cwpos) {
                 return parent::get253StateCodeword($cwpad, $cwpos + 1);
             }
 
@@ -193,7 +193,7 @@ class identity_code {
              * @param int $ncol columns of the data area.
              * @return array the placement map.
              */
-            protected function getPlacementMap($nrow, $ncol) {
+            protected function getplacementmap($nrow, $ncol) {
                 static $maps = [];
                 return $maps["{$nrow}x{$ncol}"] ??= parent::getPlacementMap($nrow, $ncol);
             }
@@ -211,7 +211,7 @@ class identity_code {
              * @param int $pp prime modulus polynomial.
              * @return array the data codewords followed by the error codewords.
              */
-            protected function getErrorCorrection($wd, $nb, $nd, $nc, $gf = 256, $pp = 301) {
+            protected function geterrorcorrection($wd, $nb, $nd, $nc, $gf = 256, $pp = 301) {
                 if ($nb !== 1 || $gf !== 256 || $pp !== 301) {
                     return parent::getErrorCorrection($wd, $nb, $nd, $nc, $gf, $pp);
                 }
