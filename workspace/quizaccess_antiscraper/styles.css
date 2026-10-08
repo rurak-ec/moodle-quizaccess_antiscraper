@@ -152,10 +152,6 @@ body.antiscraper-active .qtext-secure-host {
 }
 
 /* Printing: nothing from the quiz is printed, only a short notice. */
-@page {
-    margin: 2cm;
-}
-
 body.antiscraper-active::before {
     display: none;
 }
